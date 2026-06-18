@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salespage Builder — Formula Genie AI Style</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --surface2: #1c1c28;
+    --border: #2a2a3a;
+    --accent: #7c5cfc;
+    --accent2: #c084fc;
+    --gold: #f59e0b;
+    --green: #10b981;
+    --red: #ef4444;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --white: #ffffff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* LAYOUT */
+  .app { display: flex; height: 100vh; overflow: hidden; }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .sidebar-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .logo-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  .steps-list { padding: 12px 0; }
+
+  .step-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+  }
+
+  .step-item:hover { background: var(--surface2); }
+
+  .step-item.active {
+    background: rgba(124,92,252,0.1);
+    border-left-color: var(--accent);
+  }
+
+  .step-item.done .step-num {
+    background: var(--green);
+    color: white;
+  }
+
+  .step-num {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+    color: var(--muted);
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+
+  .step-item.active .step-num {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+
+  .step-info { flex: 1; }
+  .step-title { font-size: 12px; font-weight: 600; color: var(--text); }
+  .step-desc { font-size: 10px; color: var(--muted); margin-top: 1px; }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--surface2);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  .progress-text { font-size: 11px; color: var(--muted); }
+
+  /* MAIN EDITOR */
+  .editor {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .editor-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface);
+  }
+
+  .editor-title { font-size: 14px; font-weight: 700; }
+  .editor-subtitle { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  .header-actions { display: flex; gap: 8px; }
+
+  .btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover { background: var(--surface2); color: var(--text); }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), #9333ea);
+    color: white;
+  }
+  .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold), #d97706);
+    color: white;
+  }
+  .btn-gold:hover { opacity: 0.9; }
+
+  .btn-green {
+    background: linear-gradient(135deg, var(--green), #059669);
+    color: white;
+  }
+
+  /* EDITOR CONTENT */
+  .editor-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+  }
+
+  .section-panel { display: none; }
+  .section-panel.active { display: block; }
+
+  .panel-header {
+    margin-bottom: 24px;
+  }
+
+  .panel-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    background: rgba(124,92,252,0.15);
+    color: var(--accent2);
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .panel-title { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; }
+  .panel-desc { font-size: 13px; color: var(--muted); margin-top: 6px; line-height: 1.6; }
+
+  /* FORMULA BOX */
+  .formula-box {
+    background: rgba(124,92,252,0.08);
+    border: 1px solid rgba(124,92,252,0.25);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+  }
+
+  .formula-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent2);
+    margin-bottom: 6px;
+  }
+
+  .formula-text { font-size: 12px; color: var(--text); line-height: 1.6; }
+  .formula-text strong { color: var(--accent2); }
+
+  /* EXAMPLE BOX */
+  .example-box {
+    background: rgba(16,185,129,0.06);
+    border: 1px solid rgba(16,185,129,0.2);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+  }
+
+  .example-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--green);
+    margin-bottom: 6px;
+  }
+
+  .example-text { font-size: 12px; color: var(--text); line-height: 1.6; font-style: italic; }
+
+  /* FORM */
+  .field { margin-bottom: 16px; }
+
+  .field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .field label span { color: var(--muted); font-weight: 400; margin-left: 4px; }
+
+  .field input, .field textarea, .field select {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s;
+    resize: vertical;
+  }
+
+  .field input:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(124,92,252,0.1);
+  }
+
+  .field textarea { min-height: 80px; }
+
+  .field-hint { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* DYNAMIC LIST */
+  .dynamic-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+
+  .dynamic-item {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .dynamic-item input, .dynamic-item textarea {
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+  }
+
+  .dynamic-item input:focus, .dynamic-item textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .btn-remove {
+    width: 30px; height: 30px;
+    border-radius: 6px;
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.2);
+    color: var(--red);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    transition: all 0.2s;
+  }
+  .btn-remove:hover { background: rgba(239,68,68,0.2); }
+
+  .btn-add {
+    padding: 7px 14px;
+    border-radius: 7px;
+    background: transparent;
+    border: 1px dashed var(--border);
+    color: var(--muted);
+    font-size: 12px;
+    cursor: pointer;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+  }
+  .btn-add:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* NAVIGATION */
+  .editor-nav {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--surface);
+  }
+
+  .nav-step-info { font-size: 12px; color: var(--muted); }
+
+  /* PREVIEW PANEL */
+  .preview-panel {
+    width: 420px;
+    min-width: 420px;
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .preview-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .preview-title { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  .preview-tabs { display: flex; gap: 4px; }
+
+  .tab-btn {
+    padding: 4px 10px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+  }
+  .tab-btn.active { background: var(--accent); color: white; }
+
+  .preview-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+  }
+
+  /* SALESPAGE PREVIEW */
+  #salespage-preview {
+    font-family: 'Inter', sans-serif;
+    background: #fff;
+    color: #1a1a1a;
+    padding: 0;
+  }
+
+  .sp-header {
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    color: white;
+    text-align: center;
+    padding: 50px 30px 40px;
+  }
+
+  .sp-pre-headline {
+    display: inline-block;
+    background: rgba(255,200,0,0.15);
+    border: 1px solid rgba(255,200,0,0.3);
+    color: #ffd700;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+
+  .sp-headline {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #fff, #c084fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .sp-subheadline {
+    font-size: 15px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 auto 20px;
+  }
+
+  .sp-objection {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+
+  .sp-obj-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .sp-obj-item::before { content: "✓"; color: #10b981; font-weight: 700; }
+
+  .sp-section { padding: 40px 30px; }
+  .sp-section:nth-child(even) { background: #f9f9fb; }
+
+  .sp-section-title {
+    font-size: 22px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #1a1a1a;
+  }
+
+  .sp-section-sub {
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  .sp-pain-box {
+    background: #fff5f5;
+    border-left: 4px solid #ef4444;
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: #444;
+    line-height: 1.6;
+  }
+
+  .sp-story-box {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 10px;
+    padding: 20px;
+    font-size: 13px;
+    color: #444;
+    line-height: 1.8;
+  }
+
+  .sp-product-name {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 800;
+    color: #7c3aed;
+    margin-bottom: 8px;
+  }
+
+  .sp-product-claim {
+    text-align: center;
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 24px;
+  }
+
+  .sp-benefit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .sp-benefit-item {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 12px;
+    color: #444;
+    line-height: 1.5;
+  }
+
+  .sp-benefit-item strong {
+    display: block;
+    color: #1a1a1a;
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  .sp-testimonial-grid { display: flex; flex-direction: column; gap: 12px; }
+
+  .sp-testimonial {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .sp-testimonial-text { font-size: 13px; color: #444; line-height: 1.6; margin-bottom: 10px; font-style: italic; }
+
+  .sp-testimonial-author { font-size: 12px; font-weight: 700; color: #1a1a1a; }
+  .sp-testimonial-result { font-size: 11px; color: #10b981; font-weight: 600; }
+
+  .sp-offer-box {
+    background: linear-gradient(135deg, #1e1b4b, #312e81);
+    color: white;
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+  }
+
+  .sp-offer-title { font-size: 18px; font-weight: 800; margin-bottom: 16px; }
+
+  .sp-offer-items { text-align: left; margin-bottom: 24px; }
+
+  .sp-offer-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: 13px;
+  }
+
+  .sp-offer-item:last-child { border-bottom: none; }
+
+  .sp-offer-value { color: rgba(255,255,255,0.5); text-decoration: line-through; font-size: 12px; }
+
+  .sp-price-box { margin: 20px 0; }
+  .sp-price-original { color: rgba(255,255,255,0.4); font-size: 14px; text-decoration: line-through; }
+  .sp-price-new { font-size: 48px; font-weight: 800; color: #ffd700; line-height: 1; }
+  .sp-price-period { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+
+  .sp-cta-btn {
+    display: block;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+    padding: 16px 32px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 800;
+    text-align: center;
+    text-decoration: none;
+    margin: 16px 0;
+    box-shadow: 0 8px 24px rgba(245,158,11,0.4);
+    cursor: pointer;
+  }
+
+  .sp-guarantee {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+
+  .sp-guarantee-icon { font-size: 36px; flex-shrink: 0; }
+  .sp-guarantee-title { font-size: 14px; font-weight: 800; color: #065f46; margin-bottom: 4px; }
+  .sp-guarantee-text { font-size: 12px; color: #047857; line-height: 1.5; }
+
+  .sp-urgency {
+    background: #fff5f5;
+    border: 2px solid #fca5a5;
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    margin: 16px 0;
+  }
+
+  .sp-urgency-text { font-size: 13px; font-weight: 700; color: #dc2626; margin-bottom: 8px; }
+  .sp-timer { font-size: 24px; font-weight: 800; color: #dc2626; letter-spacing: 3px; }
+
+  .sp-faq-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+
+  .sp-faq-q { font-size: 13px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; }
+  .sp-faq-a { font-size: 12px; color: #666; line-height: 1.6; }
+
+  .sp-footer {
+    background: #1a1a1a;
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+  }
+
+  .sp-placeholder {
+    color: #aaa;
+    font-style: italic;
+  }
+
+  /* HTML TAB */
+  #html-preview {
+    padding: 20px;
+    display: none;
+  }
+
+  #html-preview.active { display: block; }
+
+  .html-code {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: #a0a0b8;
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-height: 400px;
+    overflow-y: auto;
+    line-height: 1.5;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--green);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s;
+    z-index: 999;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* MOBILE */
+  @media (max-width: 900px) {
+    .preview-panel { display: none; }
+    .sidebar { width: 220px; min-width: 220px; }
+  }
+
+  @media (max-width: 600px) {
+    .sidebar { display: none; }
+    .app { flex-direction: column; }
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    background: rgba(245,158,11,0.15);
+    color: var(--gold);
+    margin-left: 6px;
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">⚡ Salespage Builder</div>
+      <div class="logo-sub">Formula Genie AI Style</div>
+    </div>
+
+    <div class="steps-list" id="steps-list">
+      <!-- steps injected by JS -->
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width:7%"></div>
+      </div>
+      <div class="progress-text" id="progress-text">Langkah 1 dari 15</div>
+    </div>
+  </div>
+
+  <!-- EDITOR -->
+  <div class="editor">
+    <div class="editor-header">
+      <div>
+        <div class="editor-title" id="editor-title">Pre-Headline</div>
+        <div class="editor-subtitle" id="editor-subtitle">Tarik perhatian + tapis audiens yang betul</div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-ghost" onclick="showExportModal()">📤 Export HTML</button>
+        <button class="btn btn-primary" onclick="showPreview()">👁 Preview</button>
+      </div>
+    </div>
+
+    <div class="editor-content" id="editor-content">
+      <!-- panels injected by JS -->
+    </div>
+
+    <div class="editor-nav">
+      <button class="btn btn-ghost" id="btn-prev" onclick="prevStep()" disabled>← Sebelum</button>
+      <div class="nav-step-info" id="nav-step-info">1 / 15</div>
+      <button class="btn btn-primary" id="btn-next" onclick="nextStep()">Seterusnya →</button>
+    </div>
+  </div>
+
+  <!-- PREVIEW -->
+  <div class="preview-panel">
+    <div class="preview-header">
+      <div class="preview-title">Live Preview</div>
+      <div class="preview-tabs">
+        <button class="tab-btn active" onclick="switchTab('preview', this)">Visual</button>
+        <button class="tab-btn" onclick="switchTab('html', this)">HTML</button>
+      </div>
+    </div>
+    <div class="preview-content">
+      <div id="salespage-preview">
+        <!-- rendered live -->
+      </div>
+      <div id="html-preview">
+        <button class="btn btn-green" style="width:100%;margin-bottom:12px" onclick="copyHTML()">📋 Copy HTML</button>
+        <div class="html-code" id="html-code"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast">✓ Berjaya!</div>
+
+<script>
+// =====================
+// DATA MODEL
+// =====================
+const data = {
+  preHeadline: '',
+  headline: '',
+  subheadline: '',
+  objections: ['', '', ''],
+  painPoints: ['', ''],
+  storyStruggle: '',
+  storyTurning: '',
+  storyResult: '',
+  productName: '',
+  productClaim: '',
+  benefits: [{ title: '', desc: '' }, { title: '', desc: '' }, { title: '', desc: '' }, { title: '', desc: '' }],
+  testimonials: [{ text: '', name: '', result: '' }, { text: '', name: '', result: '' }],
+  offerItems: [{ name: '', value: '' }, { name: '', value: '' }, { name: '', value: '' }],
+  priceOriginal: '',
+  priceNew: '',
+  pricePeriod: 'sebulan',
+  ctaText: 'Ya! Saya Nak Cuba Sekarang →',
+  guaranteeDays: '30',
+  guaranteeText: 'Cuba selama 30 hari. Kalau tak puas hati, ka
