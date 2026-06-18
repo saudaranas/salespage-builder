@@ -822,4 +822,740 @@ const data = {
   pricePeriod: 'sebulan',
   ctaText: 'Ya! Saya Nak Cuba Sekarang →',
   guaranteeDays: '30',
-  guaranteeText: 'Cuba selama 30 hari. Kalau tak puas hati, ka
+  guaranteeText: 'Cuba selama 30 hari. Kalau tak puas hati, kami pulangkan 100% wang kamu. Tanpa soal.',
+  urgencyText: 'Harga ini hanya untuk 50 orang pertama sahaja!',
+  faqs: [{ q: '', a: '' }, { q: '', a: '' }],
+  footerName: '',
+  footerUrl: ''
+};
+
+// =====================
+// STEPS CONFIG
+// =====================
+const steps = [
+  { id: 'pre-headline', title: 'Pre-Headline', desc: 'Hook + tapis audiens', icon: '🎯' },
+  { id: 'headline', title: 'Main Headline', desc: 'Janji besar dalam 7 patah', icon: '⚡' },
+  { id: 'subheadline', title: 'Subheadline', desc: 'Cara + Hasil + Objection Kill', icon: '💡' },
+  { id: 'objections', title: 'Objection Kill', desc: 'Bunuh halangan awal', icon: '🛡' },
+  { id: 'pain', title: 'Pain Section', desc: 'Describe + Agitate', icon: '😤' },
+  { id: 'story', title: 'Story Section', desc: 'Struggle → Discovery → Result', icon: '📖' },
+  { id: 'solution', title: 'Solution Reveal', desc: 'Perkenalkan produk', icon: '✨' },
+  { id: 'benefits', title: 'Feature → Benefit', desc: 'Apa yang dia dapat', icon: '🎁' },
+  { id: 'testimonials', title: 'Social Proof', desc: 'Bukti & testimoni', icon: '⭐' },
+  { id: 'offer', title: 'Offer Stack', desc: 'Nilai vs Harga', icon: '📦' },
+  { id: 'price', title: 'Price Reveal', desc: 'Anchor + harga sebenar', icon: '💰' },
+  { id: 'cta', title: 'CTA Button', desc: 'Outcome, bukan "Beli Sekarang"', icon: '🚀' },
+  { id: 'guarantee', title: 'Guarantee', desc: 'Buang risiko dari prospek', icon: '🛡️' },
+  { id: 'urgency', title: 'Urgency / Scarcity', desc: 'Countdown & sebab terhad', icon: '⏰' },
+  { id: 'faq', title: 'FAQ', desc: 'Jawab objection terakhir', icon: '❓' }
+];
+
+// =====================
+// PANELS HTML
+// =====================
+const panels = {
+  'pre-headline': `
+    <div class="panel-header">
+      <div class="panel-tag">🎯 Langkah 1 — Pre-Headline</div>
+      <div class="panel-title">Tarik perhatian audiens yang betul</div>
+      <div class="panel-desc">Pre-headline fungsinya untuk "panggil" prospek yang spesifik supaya dia rasa "eh, ini untuk aku!"</div>
+    </div>
+    <div class="formula-box">
+      <div class="formula-label">📐 Formula</div>
+      <div class="formula-text"><strong>[Panggil audiens]</strong> + <strong>[Situasi/masalah mereka]</strong></div>
+    </div>
+    <div class="example-box">
+      <div class="example-label">✅ Contoh (Genie AI style)</div>
+      <div class="example-text">"Attention: Usahawan Malaysia yang penat uruskan order WhatsApp secara manual..."</div>
+    </div>
+    <div class="field">
+      <label>Pre-Headline <span>(panggil audiens spesifik kamu)</span></label>
+      <textarea placeholder="Contoh: Attention: Peniaga kecil yang penat balas order WhatsApp satu persatu..." oninput="data.preHeadline=this.value;updatePreview()">${data.preHeadline}</textarea>
+      <div class="field-hint">💡 Gunakan perkataan seperti "Attention:", "Warning:", "Kepada:" atau "Untuk:"</div>
+    </div>`,
+
+  'headline': `
+    <div class="panel-header">
+      <div class="panel-tag">⚡ Langkah 2 — Main Headline</div>
+      <div class="panel-title">Janji besar dalam 7 patah perkataan</div>
+      <div class="panel-desc">Headline yang kuat = jual HASIL, bukan produk. Tambah nombor spesifik untuk buat otak percaya.</div>
+    </div>
+    <div class="formula-box">
+      <div class="formula-label">📐 Formula</div>
+      <div class="formula-text"><strong>[Hasil Besar]</strong> + <strong>[Masa/Nombor Spesifik]</strong></div>
+    </div>
+    <div class="example-box">
+      <div class="example-label">✅ Contoh (Genie AI style)</div>
+      <div class="example-text">"Free Traffic In 60 Seconds" — jual HASIL (traffic), bukan produk (app)</div>
+    </div>
+    <div class="field">
+      <label>Main Headline <span>(max 7-8 patah perkataan)</span></label>
+      <input type="text" placeholder="Contoh: Terima Order WhatsApp Dalam 60 Saat" oninput="data.headline=this.value;updatePreview()" value="${data.headline}">
+      <div class="field-hint">💡 Tulis 5-10 variasi, pilih yang paling "punch". Nombor spesifik > nombor bulat.</div>
+    </div>`,
+
+  'subheadline': `
+    <div class="panel-header">
+      <div class="panel-tag">💡 Langkah 3 — Subheadline</div>
+      <div class="panel-title">Cara + Hasil + Impak dalam 1 ayat</div>
+      <div class="panel-desc">Subheadline expand apa yang headline janjikan. Ini tempat kamu explain sikit lebih.</div>
+    </div>
+    <div class="formula-box">
+      <div class="formula-label">📐 Formula</div>
+      <div class="formula-text"><strong>[Cara]</strong> + <strong>[Hasil]</strong> + <strong>[Impak]</strong> — <strong>[Objection Kill]</strong></div>
+    </div>
+    <div class="example-box">
+      <div class="example-label">✅ Contoh (Genie AI style)</div>
+      <div class="example-text">"App AI ini cipta viral posts dalam 1-click yang dapat ribuan views — buat kamu komisyen semalaman. Tiada followers, tiada website diperlukan."</div>
+    </div>
+    <div class="field">
+      <label>Subheadline <span>(1-2 ayat, padat & jelas)</span></label>
+      <textarea placeholder="Contoh: Sistem automatik yang uruskan order, stok & pembayaran — semua dalam satu link. Tiada app khas. Tiada pekerja tambahan." oninput="data.subheadline=this.value;updatePreview()">${data.subheadline}</textarea>
+    </div>`,
+
+  'objections': `
+    <div class="panel-header">
+      <div class="panel-tag">🛡 Langkah 4 — Objection Kill</div>
+      <div class="panel-title">Bunuh halangan sebelum prospek sempat fikir</div>
+      <div class="panel-desc">Ini technique paling power Genie AI — mereka bunuh objection AWAL, sebelum prospek ada masa nak ragu-ragu.</div>
+    </div>
+    <div class="formula-box">
+      <div class="formula-label">📐 Formula</div>
+      <div class="formula-text">"Tiada <strong>[halangan 1]</strong>. Tiada <strong>[halangan 2]</strong>. Tiada <strong>[halangan 3]</strong>."</div>
+    </div>
+    <div class="example-box">
+      <div class="example-label">✅ Contoh (Genie AI style)</div>
+      <div class="example-text">"No followers needed. No website needed. No experience needed."</div>
+    </div>
+    <div class="field">
+      <label>Senarai Objection / Halangan <span>(3-5 halangan utama prospek kamu)</span></label>
+      <div class="dynamic-list" id="obj-list"></div>
+      <button class="btn-add" onclick="addObjItem()">+ Tambah halangan</button>
+    </div>`,
+
+  'pain': `
+    <div class="panel-header">
+      <div class="panel-tag">😤 Langkah 5 — Pain Section</div>
+      <div class="panel-title">Describe pain → Agitate → Buat dia rasa "kamu faham aku"</div>
+      <div class="panel-desc">Jangan lompat terus ke penyelesaian. Biar prospek rasa "ini memang masalah aku!" dulu.</div>
+    </div>
+    <div class="formula-box">
+      <div class="formula-label">📐 Formula</div>
+      <div class="formula-text"><strong>Describe</strong> (gambar situasi) → <strong>Agitate</strong> (buat rasa sakit lagi) → <strong>Relate</strong> (kamu bukan seorang diri)</div>
+    </div>
+    <div class="field">
+      <label>Pain Points <span>(situasi/masalah yang prospek hadapi)</span></label>
+      <div class="dynamic-list" id="pain-list"></div>
+      <button class="btn-add" onclick="addPainItem()">+ Tambah pain point</button>
+      <div class="field-hint">💡 Contoh: "Kamu dah balas ratusan order WhatsApp tapi masih buat silap stok..."</div>
+    </div>`,
+
+  'story': `
+    <div class="panel-header">
+      <div class="panel-tag">📖 Langkah 6 — Story Section</div>
+      <div class="panel-title">Struggle → Turning Point → Discovery → Result</div>
+      <div class="panel-desc">Orang beli dari orang yang mereka percaya dan relate. Cerita kamu adalah jambatan kepercayaan.</div>
+    </div>
+    <div class="formula-box">
+      <div class="formula-label">📐 Formula</div>
+      <div class="formula-text"><strong>Struggle</strong> (dulu aku pun macam kamu) → <strong>Turning Point</strong> (sampai satu hari...) → <strong>Discovery</strong> (aku jumpa cara ni) → <strong>Result</strong> (dan hasilnya...)</div>
+    </div>
+    <div class="field">
+      <label>Perjuangan / Struggle <span>(kamu pun pernah ada masalah yang sama)</span></label>
+      <textarea placeholder="Contoh: Dulu saya juga penah balas order WhatsApp sampai tengah malam. Penat. Buat silap. Pelanggan tak puas hati..." oninput="data.storyStruggle=this.value;updatePreview()">${data.storyStruggle}</textarea>
+    </div>
+    <div class="field">
+      <label>Turning Point <span>(masa kamu jumpa penyelesaian)</span></label>
+      <textarea placeholder="Contoh: Sampai satu hari, saya terjumpa satu sistem yang tukar segalanya..." oninput="data.storyTurning=this.value;updatePreview()">${data.storyTurning}</textarea>
+    </div>
+    <div class="field">
+      <label>Result <span>(apa yang berlaku selepas tu)</span></label>
+      <textarea placeholder="Contoh: Sekarang order masuk sendiri, stok dikira sendiri, bayaran dikira sendiri. Saya boleh fokus buat benda lain." oninput="data.storyResult=this.value;updatePreview()">${data.storyResult}</textarea>
+    </div>`,
+
+  'solution': `
+    <div class="panel-header">
+      <div class="panel-tag">✨ Langkah 7 — Solution Reveal</div>
+      <div class="panel-title">Perkenalkan produk dengan BIG claim</div>
+      <div class="panel-desc">Ini masa kamu sebut nama produk kamu. Gunakan novelty trigger ("pertama kali", "baru", "revolusi") dan nombor spesifik.</div>
+    </div>
+    <div class="formula-box">
+      <div class="formula-label">📐 Formula</div>
+      <div class="formula-text">"Memperkenalkan <strong>[Nama Produk]</strong> — <strong>[Claim besar + nombor spesifik]</strong>"</div>
+    </div>
+    <div class="example-box">
+      <div class="example-label">✅ Contoh (Genie AI style)</div>
+      <div class="example-text">"Memperkenalkan Genie A.I — app pertama dunia yang tulis viral posts dalam 47 saat dan bawa free traffic secara autopilot."</div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Nama Produk</label>
+        <input type="text" placeholder="Contoh: Orderlah" oninput="data.productName=this.value;updatePreview()" value="${data.productName}">
+      </div>
+      <div class="field">
+        <label>Tagline / Claim</label>
+        <input type="text" placeholder="Contoh: Sistem Order WhatsApp Automatik" oninput="data.productClaim=this.value;updatePreview()" value="${data.productClaim}">
+      </div>
+    </div>`,
+
+  'benefits': `
+    <div class="panel-header">
+      <div class="panel-tag">🎁 Langkah 8 — Feature → Benefit</div>
+      <div class="panel-title">Jangan list feature. List apa yang prospek DAPAT.</div>
+      <div class="panel-desc">Orang tak beli "analytics dashboard" — mereka beli "tahu mana post viral dalam masa nyata". Translate feature → benefit.</div>
+    </div>
+    <div class="formula-box">
+      <div class="formula-label">📐 Formula</div>
+      <div class="formula-text"><strong>[Nama Benefit]</strong> — <strong>[Apa yang ini bermaksud untuk kehidupan/bisnes mereka]</strong></div>
+    </div>
+    <div class="field">
+      <label>Senarai Benefits <span>(4-6 benefit utama)</span></label>
+      <div id="benefit-list"></div>
+      <button class="btn-add" onclick="addBenefitItem()">+ Tambah benefit</button>
+    </div>`,
+
+  'testimonials': `
+    <div class="panel-header">
+      <div class="panel-tag">⭐ Langkah 9 — Social Proof</div>
+      <div class="panel-title">Screenshot hasil + Nama + Nombor spesifik</div>
+      <div class="panel-desc">Testimoni yang power ada 3 benda: cerita spesifik, nama sebenar, dan hasil yang boleh diukur.</div>
+    </div>
+    <div class="formula-box">
+      <div class="formula-label">📐 Formula</div>
+      <div class="formula-text"><strong>"[Situasi dulu]</strong> + <strong>[Apa yang dilakukan]</strong> + <strong>[Hasil spesifik]"</strong> — <strong>Nama, Lokasi</strong></div>
+    </div>
+    <div class="field">
+      <label>Testimoni <span>(gunakan nama & hasil nyata)</span></label>
+      <div id="testimonial-list"></div>
+      <button class="btn-add" onclick="addTestimonialItem()">+ Tambah testimoni</button>
+    </div>`,
+
+  'offer': `
+    <div class="panel-header">
+      <div class="panel-tag">📦 Langkah 10 — Offer Stack</div>
+      <div class="panel-title">Tunjuk semua yang dapat + nilai masing-masing</div>
+      <div class="panel-desc">Offer stack buat prospek rasa harga kamu sangat murah berbanding nilai yang mereka dapat. Tambah bonus untuk naikkan persepsi nilai.</div>
+    </div>
+    <div class="formula-box">
+      <div class="formula-label">📐 Formula</div>
+      <div class="formula-text">✅ <strong>[Item]</strong> (Nilai: <strong>RM XXX</strong>) × beberapa item = Total Nilai tinggi vs Harga kamu rendah</div>
+    </div>
+    <div class="field">
+      <label>Item dalam Offer Stack</label>
+      <div id="offer-list"></div>
+      <button class="btn-add" onclick="addOfferItem()">+ Tambah item</button>
+    </div>`,
+
+  'price': `
+    <div class="panel-header">
+      <div class="panel-tag">💰 Langkah 11 — Price Reveal</div>
+      <div class="panel-title">Anchor tinggi → Coret → Harga sebenar rendah</div>
+      <div class="panel-desc">Otak manusia bandingkan harga dengan anchor pertama yang dia nampak. Tunjuk harga asal dulu, lepas tu harga sebenar.</div>
+    </div>
+    <div class="formula-box">
+      <div class="formula-label">📐 Formula</div>
+      <div class="formula-text">"Sepatutnya <strong>RM [harga tinggi]</strong>. Hari ni <strong>just RM [harga rendah]</strong>."</div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Harga Asal <span>(yang dicoret)</span></label>
+        <input type="text" placeholder="297" oninput="data.priceOriginal=this.value;updatePreview()" value="${data.priceOriginal}">
+      </div>
+      <div class="field">
+        <label>Harga Sebenar <span>(harga sekarang)</span></label>
+        <input type="text" placeholder="97" oninput="data.priceNew=this.value;updatePreview()" value="${data.priceNew}">
+      </div>
+    </div>
+    <div class="field">
+      <label>Tempoh / Period</label>
+      <input type="text" placeholder="sebulan / setahun / sekali bayar" oninput="data.pricePeriod=this.value;updatePreview()" value="${data.pricePeriod}">
+    </div>`,
+
+  'cta': `
+    <div class="panel-header">
+      <div class="panel-tag">🚀 Langkah 12 — CTA Button</div>
+      <div class="panel-title">Bukan "Beli Sekarang" — tapi OUTCOME</div>
+      <div class="panel-desc">CTA yang power = "calls-to-value" bukan "calls-to-action". Beri sebab untuk klik, bukan suruh klik.</div>
+    </div>
+    <div class="formula-box">
+      <div class="formula-label">📐 Formula</div>
+      <div class="formula-text">❌ "Beli Sekarang" → ✅ <strong>"Ya! Saya Nak [Hasil yang Mereka Nak] Sekarang →"</strong></div>
+    </div>
+    <div class="example-box">
+      <div class="example-label">✅ Contoh (Genie AI style)</div>
+      <div class="example-text">"Yes! Give Me Instant Access Now →"</div>
+    </div>
+    <div class="field">
+      <label>Teks CTA Button</label>
+      <input type="text" placeholder="Ya! Saya Nak Cuba Orderlah Sekarang →" oninput="data.ctaText=this.value;updatePreview()" value="${data.ctaText}">
+      <div class="field-hint">💡 Tambah anak panah → di hujung. Mulakan dengan "Ya!" atau "Saya Nak"</div>
+    </div>`,
+
+  'guarantee': `
+    <div class="panel-header">
+      <div class="panel-tag">🛡️ Langkah 13 — Guarantee</div>
+      <div class="panel-title">Pindahkan risiko dari prospek kepada kamu</div>
+      <div class="panel-desc">Guarantee yang kuat buang rasa takut untuk beli. Prospek rasa "kalau tak best pun, dapat duit balik. Rugi apa?"</div>
+    </div>
+    <div class="formula-box">
+      <div class="formula-label">📐 Formula</div>
+      <div class="formula-text"><strong>[X]-Hari Money Back Guarantee</strong> — Cuba. Kalau tak puas hati, kami pulangkan <strong>100%</strong>. Tanpa soal.</div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Bilangan Hari</label>
+        <input type="text" placeholder="30" oninput="data.guaranteeDays=this.value;updatePreview()" value="${data.guaranteeDays}">
+      </div>
+    </div>
+    <div class="field">
+      <label>Teks Guarantee</label>
+      <textarea placeholder="Cuba selama 30 hari. Kalau tak puas hati dengan hasilnya, kami pulangkan 100% wang kamu. Tanpa soal, tanpa drama." oninput="data.guaranteeText=this.value;updatePreview()">${data.guaranteeText}</textarea>
+    </div>`,
+
+  'urgency': `
+    <div class="panel-header">
+      <div class="panel-tag">⏰ Langkah 14 — Urgency / Scarcity</div>
+      <div class="panel-title">Beri sebab logik kenapa perlu bertindak SEKARANG</div>
+      <div class="panel-desc">Tanpa urgency, prospek akan "fikir dulu" — dan tidak pernah balik. Urgency yang efektif ada sebab yang masuk akal.</div>
+    </div>
+    <div class="formula-box">
+      <div class="formula-label">📐 Formula</div>
+      <div class="formula-text">"<strong>[Sebab spesifik]</strong> — hanya untuk <strong>[bilangan terhad]</strong> orang sahaja!"</div>
+    </div>
+    <div class="field">
+      <label>Teks Urgency</label>
+      <input type="text" placeholder="Harga ini hanya untuk 50 orang pertama sahaja!" oninput="data.urgencyText=this.value;updatePreview()" value="${data.urgencyText}">
+    </div>`,
+
+  'faq': `
+    <div class="panel-header">
+      <div class="panel-tag">❓ Langkah 15 — FAQ</div>
+      <div class="panel-title">Jawab objection yang masih belum dijawab</div>
+      <div class="panel-desc">FAQ = peluang terakhir untuk selesaikan keraguan. Pilih soalan yang prospek betul-betul tanya, bukan soalan yang senang.</div>
+    </div>
+    <div class="formula-box">
+      <div class="formula-label">📐 Formula</div>
+      <div class="formula-text">Soalan yang paling kerap ditanya (atau yang paling kerap buat orang tak beli)</div>
+    </div>
+    <div class="field">
+      <label>Soalan & Jawapan</label>
+      <div id="faq-list"></div>
+      <button class="btn-add" onclick="addFaqItem()">+ Tambah soalan</button>
+    </div>
+    <div class="field" style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border)">
+      <label>Nama Produk / Brand <span>(untuk footer)</span></label>
+      <input type="text" placeholder="Orderlah" oninput="data.footerName=this.value;updatePreview()" value="${data.footerName}">
+    </div>`
+};
+
+// =====================
+// STATE
+// =====================
+let currentStep = 0;
+
+// =====================
+// INIT
+// =====================
+function init() {
+  renderSidebar();
+  renderPanel();
+  renderDynamicLists();
+  updatePreview();
+}
+
+function renderSidebar() {
+  const container = document.getElementById('steps-list');
+  container.innerHTML = steps.map((s, i) => `
+    <div class="step-item ${i === currentStep ? 'active' : ''}" onclick="goToStep(${i})">
+      <div class="step-num">${i + 1}</div>
+      <div class="step-info">
+        <div class="step-title">${s.icon} ${s.title}</div>
+        <div class="step-desc">${s.desc}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderPanel() {
+  const content = document.getElementById('editor-content');
+  const step = steps[currentStep];
+  content.innerHTML = `<div class="section-panel active">${panels[step.id]}</div>`;
+  document.getElementById('editor-title').textContent = `${step.icon} ${step.title}`;
+  document.getElementById('editor-subtitle').textContent = step.desc;
+  document.getElementById('nav-step-info').textContent = `${currentStep + 1} / ${steps.length}`;
+  document.getElementById('btn-prev').disabled = currentStep === 0;
+  document.getElementById('btn-next').textContent = currentStep === steps.length - 1 ? '✅ Selesai & Preview' : 'Seterusnya →';
+
+  const pct = Math.round(((currentStep + 1) / steps.length) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = `Langkah ${currentStep + 1} dari ${steps.length}`;
+
+  renderDynamicLists();
+}
+
+// =====================
+// NAVIGATION
+// =====================
+function goToStep(i) {
+  currentStep = i;
+  renderSidebar();
+  renderPanel();
+}
+
+function nextStep() {
+  if (currentStep < steps.length - 1) {
+    currentStep++;
+    renderSidebar();
+    renderPanel();
+    window.scrollTo(0, 0);
+  } else {
+    showPreviewModal();
+  }
+}
+
+function prevStep() {
+  if (currentStep > 0) {
+    currentStep--;
+    renderSidebar();
+    renderPanel();
+  }
+}
+
+// =====================
+// DYNAMIC LISTS
+// =====================
+function renderDynamicLists() {
+  const step = steps[currentStep].id;
+
+  if (step === 'objections') {
+    const container = document.getElementById('obj-list');
+    if (!container) return;
+    container.innerHTML = data.objections.map((o, i) => `
+      <div class="dynamic-item">
+        <input type="text" placeholder="Contoh: Tiada kemahiran IT" value="${o}" oninput="data.objections[${i}]=this.value;updatePreview()">
+        <button class="btn-remove" onclick="removeObjItem(${i})">×</button>
+      </div>
+    `).join('');
+  }
+
+  if (step === 'pain') {
+    const container = document.getElementById('pain-list');
+    if (!container) return;
+    container.innerHTML = data.painPoints.map((p, i) => `
+      <div class="dynamic-item">
+        <textarea placeholder="Contoh: Kamu penat balas order satu persatu sampai tengah malam..." oninput="data.painPoints[${i}]=this.value;updatePreview()">${p}</textarea>
+        <button class="btn-remove" onclick="removePainItem(${i})">×</button>
+      </div>
+    `).join('');
+  }
+
+  if (step === 'benefits') {
+    const container = document.getElementById('benefit-list');
+    if (!container) return;
+    container.innerHTML = data.benefits.map((b, i) => `
+      <div class="dynamic-item" style="flex-direction:column;gap:6px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:8px">
+        <input type="text" placeholder="Nama benefit (contoh: Order Masuk Automatik)" value="${b.title}" oninput="data.benefits[${i}].title=this.value;updatePreview()">
+        <input type="text" placeholder="Penjelasan (contoh: Pelanggan boleh order sendiri 24/7 tanpa kamu perlu online)" value="${b.desc}" oninput="data.benefits[${i}].desc=this.value;updatePreview()">
+        <button class="btn-remove" onclick="removeBenefitItem(${i})" style="width:auto;align-self:flex-end">× Buang</button>
+      </div>
+    `).join('');
+  }
+
+  if (step === 'testimonials') {
+    const container = document.getElementById('testimonial-list');
+    if (!container) return;
+    container.innerHTML = data.testimonials.map((t, i) => `
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:10px">
+        <textarea placeholder="Teks testimoni..." oninput="data.testimonials[${i}].text=this.value;updatePreview()" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px;color:var(--text);font-family:Inter,sans-serif;font-size:12px;margin-bottom:8px;resize:vertical">${t.text}</textarea>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <input type="text" placeholder="Nama (contoh: Aiman, KL)" value="${t.name}" oninput="data.testimonials[${i}].name=this.value;updatePreview()" style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:Inter,sans-serif;font-size:12px">
+          <input type="text" placeholder="Hasil (contoh: Jimat 3 jam sehari)" value="${t.result}" oninput="data.testimonials[${i}].result=this.value;updatePreview()" style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:Inter,sans-serif;font-size:12px">
+        </div>
+        <button class="btn-remove" onclick="removeTestimonialItem(${i})" style="width:auto;margin-top:8px">× Buang</button>
+      </div>
+    `).join('');
+  }
+
+  if (step === 'offer') {
+    const container = document.getElementById('offer-list');
+    if (!container) return;
+    container.innerHTML = data.offerItems.map((o, i) => `
+      <div class="dynamic-item" style="margin-bottom:8px">
+        <input type="text" placeholder="Nama item (contoh: Akses Penuh Orderlah)" value="${o.name}" oninput="data.offerItems[${i}].name=this.value;updatePreview()" style="flex:2">
+        <input type="text" placeholder="Nilai (RM)" value="${o.value}" oninput="data.offerItems[${i}].value=this.value;updatePreview()" style="flex:1;max-width:100px">
+        <button class="btn-remove" onclick="removeOfferItem(${i})">×</button>
+      </div>
+    `).join('');
+  }
+
+  if (step === 'faq') {
+    const container = document.getElementById('faq-list');
+    if (!container) return;
+    container.innerHTML = data.faqs.map((f, i) => `
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:10px">
+        <input type="text" placeholder="Soalan (contoh: Adakah ini sesuai untuk pemula?)" value="${f.q}" oninput="data.faqs[${i}].q=this.value;updatePreview()" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:Inter,sans-serif;font-size:12px;margin-bottom:8px">
+        <textarea placeholder="Jawapan..." oninput="data.faqs[${i}].a=this.value;updatePreview()" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:Inter,sans-serif;font-size:12px;resize:vertical;min-height:60px">${f.a}</textarea>
+        <button class="btn-remove" onclick="removeFaqItem(${i})" style="width:auto;margin-top:6px">× Buang</button>
+      </div>
+    `).join('');
+  }
+}
+
+// ADD/REMOVE helpers
+function addObjItem() { data.objections.push(''); renderDynamicLists(); }
+function removeObjItem(i) { data.objections.splice(i,1); renderDynamicLists(); updatePreview(); }
+function addPainItem() { data.painPoints.push(''); renderDynamicLists(); }
+function removePainItem(i) { data.painPoints.splice(i,1); renderDynamicLists(); updatePreview(); }
+function addBenefitItem() { data.benefits.push({title:'',desc:''}); renderDynamicLists(); }
+function removeBenefitItem(i) { data.benefits.splice(i,1); renderDynamicLists(); updatePreview(); }
+function addTestimonialItem() { data.testimonials.push({text:'',name:'',result:''}); renderDynamicLists(); }
+function removeTestimonialItem(i) { data.testimonials.splice(i,1); renderDynamicLists(); updatePreview(); }
+function addOfferItem() { data.offerItems.push({name:'',value:''}); renderDynamicLists(); }
+function removeOfferItem(i) { data.offerItems.splice(i,1); renderDynamicLists(); updatePreview(); }
+function addFaqItem() { data.faqs.push({q:'',a:''}); renderDynamicLists(); }
+function removeFaqItem(i) { data.faqs.splice(i,1); renderDynamicLists(); updatePreview(); }
+
+// =====================
+// PREVIEW
+// =====================
+function ph(val, fallback) {
+  if (val && val.trim()) return val;
+  return `<span class="sp-placeholder">${fallback}</span>`;
+}
+
+function updatePreview() {
+  const totalOfferValue = data.offerItems.reduce((sum, o) => {
+    const v = parseFloat((o.value||'').replace(/[^0-9.]/g,'')) || 0;
+    return sum + v;
+  }, 0);
+
+  const html = `
+<div class="sp-header">
+  <div class="sp-pre-headline">${ph(data.preHeadline, 'Attention: [Audiens kamu]...')}</div>
+  <div class="sp-headline">${ph(data.headline, 'Headline Besar Kamu Di Sini')}</div>
+  <div class="sp-subheadline">${ph(data.subheadline, 'Subheadline yang explain cara, hasil dan bunuh objection...')}</div>
+  <div class="sp-objection">
+    ${data.objections.filter(o=>o.trim()).map(o=>`<div class="sp-obj-item">${o}</div>`).join('') || '<div class="sp-obj-item sp-placeholder">Tiada [halangan 1] diperlukan</div>'}
+  </div>
+</div>
+
+${data.painPoints.filter(p=>p.trim()).length ? `
+<div class="sp-section">
+  <div class="sp-section-title">Adakah ini situasi kamu?</div>
+  ${data.painPoints.filter(p=>p.trim()).map(p=>`<div class="sp-pain-box">${p}</div>`).join('')}
+</div>` : ''}
+
+${data.storyStruggle || data.storyTurning || data.storyResult ? `
+<div class="sp-section">
+  <div class="sp-section-title">Kisah Saya...</div>
+  <div class="sp-story-box">
+    ${data.storyStruggle ? `<p style="margin-bottom:12px">${data.storyStruggle}</p>` : ''}
+    ${data.storyTurning ? `<p style="margin-bottom:12px">${data.storyTurning}</p>` : ''}
+    ${data.storyResult ? `<p><strong>${data.storyResult}</strong></p>` : ''}
+  </div>
+</div>` : ''}
+
+<div class="sp-section" style="background:#faf5ff">
+  <div class="sp-product-name">${ph(data.productName, 'Nama Produk Kamu')}</div>
+  <div class="sp-product-claim">${ph(data.productClaim, 'Tagline / Big Claim produk kamu')}</div>
+  ${data.benefits.filter(b=>b.title.trim()).length ? `
+  <div class="sp-benefit-grid">
+    ${data.benefits.filter(b=>b.title.trim()).map(b=>`
+      <div class="sp-benefit-item">
+        <strong>✅ ${b.title}</strong>
+        ${b.desc}
+      </div>
+    `).join('')}
+  </div>` : ''}
+</div>
+
+${data.testimonials.filter(t=>t.text.trim()).length ? `
+<div class="sp-section">
+  <div class="sp-section-title">Apa Kata Mereka...</div>
+  <div class="sp-testimonial-grid">
+    ${data.testimonials.filter(t=>t.text.trim()).map(t=>`
+      <div class="sp-testimonial">
+        <div class="sp-testimonial-text">"${t.text}"</div>
+        <div class="sp-testimonial-author">${t.name}</div>
+        ${t.result ? `<div class="sp-testimonial-result">📈 ${t.result}</div>` : ''}
+      </div>
+    `).join('')}
+  </div>
+</div>` : ''}
+
+<div class="sp-section">
+  ${data.urgencyText ? `
+  <div class="sp-urgency">
+    <div class="sp-urgency-text">⚠️ ${data.urgencyText}</div>
+    <div class="sp-timer">00 : 14 : 32</div>
+  </div>` : ''}
+
+  <div class="sp-offer-box">
+    <div class="sp-offer-title">🎁 Apa Yang Kamu Dapat Hari Ini</div>
+    <div class="sp-offer-items">
+      ${data.offerItems.filter(o=>o.name.trim()).map(o=>`
+        <div class="sp-offer-item">
+          <span>✅ ${o.name}</span>
+          <span class="sp-offer-value">RM ${o.value || '???'}</span>
+        </div>
+      `).join('')}
+    </div>
+    ${totalOfferValue > 0 ? `<div style="color:rgba(255,255,255,0.5);font-size:12px;margin-bottom:8px">Jumlah Nilai: <span style="text-decoration:line-through">RM ${totalOfferValue.toLocaleString()}</span></div>` : ''}
+    <div class="sp-price-box">
+      ${data.priceOriginal ? `<div class="sp-price-original">RM ${data.priceOriginal}</div>` : ''}
+      <div class="sp-price-new">${data.priceNew ? `RM ${data.priceNew}` : 'RM ???'}</div>
+      <div class="sp-price-period">${data.pricePeriod || 'sebulan'}</div>
+    </div>
+    <div class="sp-cta-btn">${data.ctaText || 'Ya! Saya Nak Cuba Sekarang →'}</div>
+  </div>
+
+  ${data.guaranteeText ? `
+  <div class="sp-guarantee">
+    <div class="sp-guarantee-icon">🛡️</div>
+    <div>
+      <div class="sp-guarantee-title">${data.guaranteeDays}-Hari Money Back Guarantee</div>
+      <div class="sp-guarantee-text">${data.guaranteeText}</div>
+    </div>
+  </div>` : ''}
+</div>
+
+${data.faqs.filter(f=>f.q.trim()).length ? `
+<div class="sp-section">
+  <div class="sp-section-title">Soalan Lazim</div>
+  ${data.faqs.filter(f=>f.q.trim()).map(f=>`
+    <div class="sp-faq-item">
+      <div class="sp-faq-q">❓ ${f.q}</div>
+      <div class="sp-faq-a">${f.a}</div>
+    </div>
+  `).join('')}
+</div>` : ''}
+
+<div class="sp-footer">
+  © ${new Date().getFullYear()} ${data.footerName || data.productName || 'Brand Kamu'} · Semua hak terpelihara
+</div>`;
+
+  document.getElementById('salespage-preview').innerHTML = html;
+  document.getElementById('html-code').textContent = `<!DOCTYPE html>\n<html lang="ms">\n<head>\n<meta charset="UTF-8">\n<title>${data.productName || 'Salespage'}</title>\n</head>\n<body>\n${html}\n</body>\n</html>`;
+}
+
+// =====================
+// TABS
+// =====================
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const preview = document.getElementById('salespage-preview');
+  const htmlPreview = document.getElementById('html-preview');
+  if (tab === 'preview') {
+    preview.style.display = 'block';
+    htmlPreview.style.display = 'none';
+  } else {
+    preview.style.display = 'none';
+    htmlPreview.style.display = 'block';
+  }
+}
+
+// =====================
+// EXPORT
+// =====================
+function showExportModal() {
+  showPreview();
+}
+
+function showPreview() {
+  updatePreview();
+  showToast('Preview dikemaskini!');
+}
+
+function showPreviewModal() {
+  updatePreview();
+  showToast('Salespage kamu siap! Tukar ke tab Preview untuk lihat hasil penuh.');
+}
+
+function copyHTML() {
+  const html = document.getElementById('html-code').textContent;
+  navigator.clipboard.writeText(html).then(() => showToast('HTML berjaya disalin!'));
+}
+
+function showExportModal() {
+  const html = `<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${data.productName || 'Salespage'}</title>
+<style>
+body{font-family:Inter,sans-serif;margin:0;padding:0;color:#1a1a1a}
+.sp-header{background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);color:white;text-align:center;padding:50px 30px 40px}
+.sp-pre-headline{display:inline-block;background:rgba(255,200,0,.15);border:1px solid rgba(255,200,0,.3);color:#ffd700;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
+.sp-headline{font-size:36px;font-weight:800;line-height:1.2;margin-bottom:16px;color:white}
+.sp-subheadline{font-size:16px;color:rgba(255,255,255,.8);line-height:1.6;max-width:500px;margin:0 auto 20px}
+.sp-objection{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:12px}
+.sp-obj-item{font-size:13px;color:rgba(255,255,255,.7)}
+.sp-obj-item::before{content:"✓ ";color:#10b981;font-weight:700}
+.sp-section{padding:40px 30px;max-width:700px;margin:0 auto}
+.sp-section-title{font-size:24px;font-weight:800;text-align:center;margin-bottom:16px}
+.sp-pain-box{background:#fff5f5;border-left:4px solid #ef4444;padding:16px 20px;border-radius:0 8px 8px 0;margin-bottom:12px;font-size:14px;line-height:1.6}
+.sp-story-box{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:24px;font-size:14px;line-height:1.8}
+.sp-product-name{text-align:center;font-size:32px;font-weight:800;color:#7c3aed;margin-bottom:8px}
+.sp-product-claim{text-align:center;font-size:16px;color:#555;margin-bottom:24px}
+.sp-benefit-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sp-benefit-item{background:white;border:1px solid #e5e7eb;border-radius:10px;padding:14px;font-size:13px;line-height:1.5}
+.sp-benefit-item strong{display:block;font-size:14px;margin-bottom:4px}
+.sp-testimonial{background:white;border:1px solid #e5e7eb;border-radius:10px;padding:16px;margin-bottom:12px}
+.sp-testimonial-text{font-size:14px;color:#444;line-height:1.6;margin-bottom:10px;font-style:italic}
+.sp-testimonial-author{font-size:13px;font-weight:700}
+.sp-testimonial-result{font-size:12px;color:#10b981;font-weight:600}
+.sp-offer-box{background:linear-gradient(135deg,#1e1b4b,#312e81);color:white;border-radius:16px;padding:30px;text-align:center}
+.sp-offer-title{font-size:20px;font-weight:800;margin-bottom:16px}
+.sp-offer-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:14px}
+.sp-offer-value{color:rgba(255,255,255,.4);text-decoration:line-through;font-size:13px}
+.sp-price-original{color:rgba(255,255,255,.4);font-size:16px;text-decoration:line-through}
+.sp-price-new{font-size:52px;font-weight:800;color:#ffd700;line-height:1}
+.sp-price-period{font-size:14px;color:rgba(255,255,255,.6);margin-top:4px}
+.sp-cta-btn{display:block;background:linear-gradient(135deg,#f59e0b,#d97706);color:white;padding:18px 32px;border-radius:50px;font-size:18px;font-weight:800;text-align:center;text-decoration:none;margin:16px 0;box-shadow:0 8px 24px rgba(245,158,11,.4);cursor:pointer}
+.sp-guarantee{display:flex;align-items:center;gap:16px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:20px;margin:20px 0}
+.sp-guarantee-icon{font-size:40px}
+.sp-guarantee-title{font-size:15px;font-weight:800;color:#065f46;margin-bottom:4px}
+.sp-guarantee-text{font-size:13px;color:#047857;line-height:1.5}
+.sp-urgency{background:#fff5f5;border:2px solid #fca5a5;border-radius:10px;padding:16px;text-align:center;margin:16px 0}
+.sp-urgency-text{font-size:14px;font-weight:700;color:#dc2626;margin-bottom:8px}
+.sp-timer{font-size:28px;font-weight:800;color:#dc2626;letter-spacing:3px}
+.sp-faq-item{border:1px solid #e5e7eb;border-radius:10px;padding:16px;margin-bottom:10px}
+.sp-faq-q{font-size:14px;font-weight:700;margin-bottom:6px}
+.sp-faq-a{font-size:13px;color:#666;line-height:1.6}
+.sp-footer{background:#1a1a1a;color:rgba(255,255,255,.5);text-align:center;padding:24px;font-size:13px}
+</style>
+</head>
+<body>
+${document.getElementById('salespage-preview').innerHTML}
+</body>
+</html>`;
+
+  const blob = new Blob([html], {type: 'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `salespage-${(data.productName||'produk').toLowerCase().replace(/\s+/g,'-')}.html`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Salespage berjaya diexport!');
+}
+
+// =====================
+// TOAST
+// =====================
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// =====================
+// START
+// =====================
+init();
+</script>
+</body>
+</html>
